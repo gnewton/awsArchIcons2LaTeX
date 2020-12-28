@@ -1,0 +1,44 @@
+\documentclass[12pt]{article}
+\usepackage{imakeidx}
+\usepackage{hyperref}
+\usepackage{savetrees}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{multicol}
+\usepackage{seqsplit}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+
+%% Vertically center image on line
+%% From https://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other?rq=1
+\newcommand{\vcenteredinclude}[1]{\begingroup
+\setbox0=\hbox{#1}%
+\parbox{\wd0}{\box0}\endgroup}
+
+
+\begin{document}
+
+Here is an Arch icon:
+\includegraphics[width=.8cm]{../icons_tex/Arch_Amazon-API-Gateway_64.pdf}
+
+\vspace{1cm}
+The same larger: \includegraphics[width=5cm]{../icons_tex/Arch_Amazon-API-Gateway_64.pdf}
+
+\vspace{1cm}
+The same centered in the line \vcenteredinclude{\includegraphics[width=0.8cm]{../icons_tex/Arch_Amazon-API-Gateway_64.pdf}} like this.
+
+\vspace{3cm}
+
+Here is an Res icon:
+\includegraphics[width=.8cm]{../icons_tex/Res_AWS-Amazon-Simple-Storage_S3-Replication_48_Light.pdf}
+
+\vspace{2cm}
+The same larger: \includegraphics[width=5cm]{../icons_tex/Res_AWS-Amazon-Simple-Storage_S3-Replication_48_Light.pdf}
+
+\vspace{1cm}
+The same centered in the line \vcenteredinclude{\includegraphics[width=0.8cm]{../icons_tex/Res_AWS-Amazon-Simple-Storage_S3-Replication_48_Light.pdf}} like this.
+
+\end{document}
