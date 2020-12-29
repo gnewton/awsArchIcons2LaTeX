@@ -2,6 +2,7 @@ package main
 
 import (
 	"archive/zip"
+	"bufio"
 	"fmt"
 	"io"
 	"log"
@@ -32,7 +33,10 @@ const StartRes = "\\resStart"
 const EndRes = "\\resEnd"
 
 var argAssetZipFile string = "AWS-Architecture-Assets-For-Light-and-Dark-BG_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip"
+var argConvertSvgWithInkscape = true
+var argIconsFile string = "tex/icons.tex"
 var argInkscapeBinPath string = "/usr/bin/inkscape"
+var argMacrosFile string = "tex/macros.tex"
 var argPdfTexOutDir string = "icons_tex"
 var argShowAllArch bool = false
 var argShowAllRes bool = false
@@ -54,15 +58,44 @@ func main() {
 	sort.Sort(ByName(res_entries))
 	sort.Sort(ByName(arch_entries))
 
-	fmt.Println(StartRes)
-	printMacros(res_entries)
-	printEntries(res_entries)
-	fmt.Println(EndRes)
+	macrosFile, err := os.Create(argMacrosFile)
+	if err != nil {
+		log.Panic(err)
+	}
+	wmacros := bufio.NewWriter(macrosFile)
+	defer func() {
+		if err = wmacros.Flush(); err != nil {
+			log.Panic(err)
+		}
+		if err := macrosFile.Close(); err != nil {
+			log.Panic(err)
+		}
+	}()
 
-	fmt.Println(StartArch)
-	printMacros(arch_entries)
-	printEntries(arch_entries)
-	fmt.Println(EndArch)
+	printMacros(wmacros, res_entries)
+	printMacros(wmacros, arch_entries)
+
+	iconsFile, err := os.Create(argIconsFile)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	wicons := bufio.NewWriter(iconsFile)
+	defer func() {
+		if err = wicons.Flush(); err != nil {
+			log.Panic(err)
+		}
+		if err := iconsFile.Close(); err != nil {
+			log.Panic(err)
+		}
+	}()
+
+	fmt.Fprintln(wicons, StartRes)
+	printEntries(wicons, res_entries)
+	fmt.Fprintln(wicons, EndRes)
+	fmt.Fprintln(wicons, StartArch)
+	printEntries(wicons, arch_entries)
+	fmt.Fprintln(wicons, EndArch)
 }
 
 func Unzip(src string, dest string) ([]*Entry, []*Entry, error) {
@@ -118,9 +151,10 @@ func Unzip(src string, dest string) ([]*Entry, []*Entry, error) {
 		pdfFile := strings.TrimSuffix(fpath, "svg") + "pdf"
 		justF := strings.TrimSuffix(filepath.Base(fpath), "svg") + "pdf"
 		cleanName := cleanAll(justF)
+		macroName := string(justF[0]) + makeMacroName(cleanName)
 
-		entryString := fmt.Sprintf("\\gxs{%s %s} {\\includegraphics[width=\\iconsize\\textwidth]{%s}} {%s}",
-			makeSearchLink(cleanName), index(cleanName), justF, strings.ReplaceAll(justF, "_", "\\_"))
+		entryString := fmt.Sprintf("\\gxs{%s %s} {\\includegraphics[width=\\iconsize\\textwidth]{%s}} {%s} {{\\textbackslash}%s}",
+			makeSearchLink(cleanName), index(cleanName), justF, strings.ReplaceAll(justF, "_", "\\_"), macroName)
 
 		entry := Entry{
 			sortName:  cleanName,
@@ -129,7 +163,7 @@ func Unzip(src string, dest string) ([]*Entry, []*Entry, error) {
 			fullPath:  f.Name,
 			modified:  f.FileHeader.Modified,
 			chosen:    true,
-			macroName: string(justF[0]) + makeMacroName(cleanName),
+			macroName: macroName,
 		}
 		if filenameCollision, ok := entryMap[entry.filename]; ok {
 			log.Println("****************************************Collision!!!  " + entry.fullPath + " " + entry.value + "|||" + filenameCollision.fullPath + " " + filenameCollision.value)
@@ -182,33 +216,34 @@ func Unzip(src string, dest string) ([]*Entry, []*Entry, error) {
 			res_entries = append(res_entries, &entry)
 		}
 
-		// Setup running inkscape to do conversion, writing out to pdfFile
-		cmd := exec.Command(argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
-		stdin, err := cmd.StdinPipe()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		// Read the zip file and pipe in to inkscape
-		go func() {
-			defer func() {
-				if err := stdin.Close(); err != nil {
-					log.Fatal(err)
-				}
-			}()
-			_, err = io.Copy(stdin, rc)
+		if argConvertSvgWithInkscape {
+			// Setup running inkscape to do conversion, writing out to pdfFile
+			cmd := exec.Command(argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
+			stdin, err := cmd.StdinPipe()
 			if err != nil {
 				log.Fatal(err)
 			}
-		}()
 
-		// If there is a problem with running inkscape...
-		stdoutStderr, err := cmd.CombinedOutput()
-		if err != nil {
-			fmt.Printf("%s\n", stdoutStderr)
-			log.Fatal(err)
+			// Read the zip file and pipe in to inkscape
+			go func() {
+				defer func() {
+					if err := stdin.Close(); err != nil {
+						log.Fatal(err)
+					}
+				}()
+				_, err = io.Copy(stdin, rc)
+				if err != nil {
+					log.Fatal(err)
+				}
+			}()
+
+			// If there is a problem with running inkscape...
+			stdoutStderr, err := cmd.CombinedOutput()
+			if err != nil {
+				fmt.Printf("%s\n", stdoutStderr)
+				log.Fatal(err)
+			}
 		}
-
 		// Close the file without defer to close before next iteration of loop
 		err = rc.Close()
 
@@ -329,7 +364,7 @@ func (a ByName) Len() int           { return len(a) }
 func (a ByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByName) Less(i, j int) bool { return strings.Compare(a[i].sortName, a[j].sortName) == -1 }
 
-func printEntries(entries []*Entry) {
+func printEntries(w io.Writer, entries []*Entry) {
 	previous := ""
 	previousChosen := false
 	for _, entry := range entries {
@@ -341,20 +376,20 @@ func printEntries(entries []*Entry) {
 				previousChosen = entry.chosen
 			}
 
-			fmt.Println(entry.value, "  \\\\"+entry.macroName)
-			fmt.Println("")
+			fmt.Fprintln(w, entry.value)
+			fmt.Fprintln(w, "")
 		}
 	}
 }
 
-func printMacros(entries []*Entry) {
-	fmt.Println("\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+func printMacros(w io.Writer, entries []*Entry) {
+	fmt.Fprintln(w, "\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 	for _, entry := range entries {
 		if entry.macroName == "RSThreeSThreeReplication" {
 			log.Printf("*******************ZZZ  %+v", *entry)
 		}
 		if entry.chosen {
-			fmt.Printf("\\newcommand{\\%s}[1]{\\includegraphics[width=#1]{%s}}\n",
+			fmt.Fprintf(w, "\\newcommand{\\%s}[1]{\\includegraphics[width=#1]{%s}}\n",
 				entry.macroName, entry.filename)
 		}
 	}

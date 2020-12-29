@@ -49,12 +49,9 @@
 \newcommand{\resEnd}{\end{multicols}\clearpage}
 
 %% Command used for each icon entry
-\newcommand{\gxs}[3]{\vcenteredinclude{#2}{\hspace{3mm} \begin{minipage}{\minipagespacing}{\bf \small{#1}}\\ \tt \seqsplit{#3}\end{minipage}}\vspace{\vspacing}\newline}
+\newcommand{\gxs}[4]{\vcenteredinclude{#2}{\hspace{3mm} \begin{minipage}{\minipagespacing}{\bf \small{#1}}\\ \tt \seqsplit{#3} \\\tt Macro: \seqsplit{#4} \end{minipage}}\vspace{\vspacing}\newline}
 
-
-%\newcommand{\APIGatewayEndpoint}[1]{\includegraphics[width=#1]{Res_Amazon-API-Gateway_Endpoint_48_Light.pdf}\\ \texttt{{\textbackslash}APIGatewayEndpoint}}
-
-%\input{macros}
+\input{macros}
 
 %% From: https://tex.stackexchange.com/a/847
 \hypersetup{
