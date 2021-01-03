@@ -36,6 +36,10 @@ var argAssetZipFile string = "AWS-Architecture-Assets-For-Light-and-Dark-BG_2020
 var argConvertSvgWithInkscape = true
 var argIconsFile string = "tex/icons.tex"
 var argInkscapeBinPath string = "/usr/bin/inkscape"
+
+var argInkscapeHelpArgs []string = []string{"--version"}
+
+//var argInkscapeHelpArgs []string = []string{"--version", "--without-gui"}
 var argMacrosFile string = "tex/macros.tex"
 var argPdfTexOutDir string = "icons_tex"
 var argShowAllArch bool = false
@@ -50,7 +54,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	arch_entries, res_entries, err := Unzip(argAssetZipFile, argPdfTexOutDir)
+	arch_entries, res_entries, err := processAWSIcons(argAssetZipFile, argPdfTexOutDir)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -72,6 +76,14 @@ func main() {
 		}
 	}()
 
+	inkscapeVersion, err := getInkscapeVersion(argInkscapeBinPath, argInkscapeHelpArgs...)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Fprintf(wmacros, "\\newcommand{\\assetZipFile}{%s}\n", strings.ReplaceAll(argAssetZipFile, "_", "\\_"))
+	fmt.Fprintf(wmacros, "\\newcommand{\\inkscapeVersion}{%s}\n", strings.ReplaceAll(inkscapeVersion, "_", "\\_"))
+	fmt.Fprintln(wmacros, "%%%%%%%%%%%%%%%%")
 	printMacros(wmacros, res_entries)
 	printMacros(wmacros, arch_entries)
 
@@ -98,7 +110,7 @@ func main() {
 	fmt.Fprintln(wicons, EndArch)
 }
 
-func Unzip(src string, dest string) ([]*Entry, []*Entry, error) {
+func processAWSIcons(src string, dest string) ([]*Entry, []*Entry, error) {
 	arch_entries := make([]*Entry, 0)
 	res_entries := make([]*Entry, 0)
 	entryMap := make(map[string]*Entry)
@@ -111,12 +123,17 @@ func Unzip(src string, dest string) ([]*Entry, []*Entry, error) {
 	defer r.Close()
 
 	for _, f := range r.File {
+		if f.FileInfo().IsDir() {
+			continue
+		}
+
+		// Skip macos stuff
 		if strings.HasPrefix(f.Name, MACOS_PREFIX) || !strings.HasSuffix(f.Name, ".svg") {
 			continue
 		}
 
-		// Only take the Arch 64, not the 16,32,48
-		if !argShowAllArch && strings.HasPrefix(filepath.Base(f.Name), "Arch") && !strings.HasSuffix(filepath.Base(f.Name), "_64.svg") {
+		// For arch, do not sure the 16,32,48 versions
+		if strings.HasPrefix(filepath.Base(f.Name), "Arch") && !strings.Contains(f.Name, "_64") {
 			continue
 		}
 
@@ -126,16 +143,11 @@ func Unzip(src string, dest string) ([]*Entry, []*Entry, error) {
 		}
 
 		// Store filename/path for returning and using later on
-
 		fpath := strings.ReplaceAll(strings.ReplaceAll(filepath.Join(dest, filepath.Base(f.Name)), " ", "_"), "&", "And")
 
 		// Check for ZipSlip. More Info: http://bit.ly/2MsjAWE
 		if !strings.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) {
 			return nil, nil, fmt.Errorf("%s: illegal file path", fpath)
-		}
-
-		if f.FileInfo().IsDir() {
-			continue
 		}
 
 		// Is a file:
@@ -153,8 +165,8 @@ func Unzip(src string, dest string) ([]*Entry, []*Entry, error) {
 		cleanName := cleanAll(justF)
 		macroName := string(justF[0]) + makeMacroName(cleanName)
 
-		entryString := fmt.Sprintf("\\gxs{%s %s} {\\includegraphics[width=\\iconsize\\textwidth]{%s}} {%s} {{\\textbackslash}%s}",
-			makeSearchLink(cleanName), index(cleanName), justF, strings.ReplaceAll(justF, "_", "\\_"), macroName)
+		entryString := fmt.Sprintf("\\gxs{%s %s} {\\includegraphics[width=\\iconsize\\textwidth]{%s}} {%s} {{\\textbackslash}%s} {%s}",
+			makeSearchLink(cleanName), index(cleanName), justF, strings.ReplaceAll(justF, "_", "\\_"), macroName, cleanName)
 
 		entry := Entry{
 			sortName:  cleanName,
@@ -217,31 +229,39 @@ func Unzip(src string, dest string) ([]*Entry, []*Entry, error) {
 		}
 
 		if argConvertSvgWithInkscape {
-			// Setup running inkscape to do conversion, writing out to pdfFile
-			cmd := exec.Command(argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
-			stdin, err := cmd.StdinPipe()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			// Read the zip file and pipe in to inkscape
-			go func() {
-				defer func() {
-					if err := stdin.Close(); err != nil {
-						log.Fatal(err)
-					}
-				}()
-				_, err = io.Copy(stdin, rc)
+			if true {
+				e, err := runCommandReadStdin(rc, argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
+				if err != nil {
+					log.Println(e)
+					log.Fatal(err)
+				}
+			} else {
+				// Setup running inkscape to do conversion, writing out to pdfFile
+				cmd := exec.Command(argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
+				stdin, err := cmd.StdinPipe()
 				if err != nil {
 					log.Fatal(err)
 				}
-			}()
 
-			// If there is a problem with running inkscape...
-			stdoutStderr, err := cmd.CombinedOutput()
-			if err != nil {
-				fmt.Printf("%s\n", stdoutStderr)
-				log.Fatal(err)
+				// Read the zip file and pipe in to inkscape
+				go func() {
+					defer func() {
+						if err := stdin.Close(); err != nil {
+							log.Fatal(err)
+						}
+					}()
+					_, err = io.Copy(stdin, rc)
+					if err != nil {
+						log.Fatal(err)
+					}
+				}()
+
+				// If there is a problem with running inkscape...
+				stdoutStderr, err := cmd.CombinedOutput()
+				if err != nil {
+					fmt.Printf("%s\n", stdoutStderr)
+					log.Fatal(err)
+				}
 			}
 		}
 		// Close the file without defer to close before next iteration of loop
@@ -354,6 +374,7 @@ func index(s string) (r string) {
 	sections := strings.Split(s, ": ")
 	if len(sections) > 1 {
 		r = r + "\\index{" + sections[len(sections)-1] + " (" + strings.Join(sections[0:len(sections)-1], " ") + ")}"
+
 	}
 	return r
 }
@@ -396,16 +417,145 @@ func printMacros(w io.Writer, entries []*Entry) {
 }
 
 func makeMacroName(s string) string {
-	return replaceNumberWithStrings(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(s, " ", ""), ":", "_"), "_", ""))
+	return contractNames(replaceNumberWithStrings(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(s, " ", ""), ":", "_"), "_", "")))
+}
+
+func contractNames(s string) string {
+	for i := 0; i < len(macroSubs); i += 2 {
+		s = strings.ReplaceAll(s, macroSubs[i], macroSubs[i+1])
+	}
+	return s
 }
 
 // LaTeX does not allow numbers in macro names!!!!
 // http://www.texfaq.org/FAQ-linmacnames
 var numMap = map[string]string{"0": "Zero", "1": "One", "2": "Two", "3": "Three", "4": "Four", "5": "Five", "6": "Six", "7": "Seven", "8": "Eight", "9": "Nine"}
 
+// To shorten macro names
+var macroSubs = []string{
+	"CertificateManager", "CertMan",
+	"ApplicationDiscoveryService", "ADS",
+	"CommandLineInterface", "CLI",
+	"CostandUsageReport", "CostUseRep",
+	"CloudFormation", "CloudForm",
+	"KeyManagementServices", "KMS",
+	"ElasticBlockStore", "EBS",
+	"ElasticContainerRegistry", "ECR",
+	"ElasticBeanstalk", "EB",
+	"ElasticContainerService", "ECS",
+	"ElasticLoadBalancing", "ELB",
+	"IdentityAccessManagement", "IAM",
+	"IdentityandAccessManagement", "IAM",
+	"ServerlessApplicationRepository", "SvlsAppRepo",
+	"Encryption", "Encr",
+	"Encrypted", "Encrd",
+	"Thing", "Thng",
+	"Medical", "Med",
+	"Compute", "Cmput",
+	"Simulation", "Simul",
+	"Notification", "Notif",
+	"Object", "Obj",
+	"General", "Gen",
+	"Vault", "Vlt",
+	"Archive", "Archv",
+	"Replication", "Repli",
+	"Points", "Pts",
+	"Intelligent", "Intell",
+	"TrainingCertification", "TrainCert",
+	"Kinesis", "Kin",
+	"Amazon", "",
+	"AWS", "",
+	"PersonalHealthDashboard", "PersHlthDbrd",
+	"Manager", "Mngr",
+	"License", "Licns",
+	"EventBridge", "EvBr",
+	"Route53", "Rt53",
+	"DynamoDB", "DDB",
+	"Bucket", "Bkt",
+	"SimpleNotificationService", "SNS",
+	"SimpleQueueService", "SQS",
+	"StorageGateway", "StorGat",
+	"SystemManager", "SysMgr",
+	"LoadBalancer", "LB",
+	"Migration", "Migrat",
+	"TransferFamily", "TranFam",
+	"TrustedAdvisor", "TrusTAdv",
+	"Certificate", "Cert",
+	"Recovery", "Recov",
+	"Resource", "Res",
+	"Global", "Glbl",
+	"Multiple", "Mult",
+	"Volumes", "Vols",
+	"Volume", "Vol",
+	"Default", "Dflt",
+	"Image", "Img",
+	"Registry", "Reg",
+	"Elemental", "Elem",
+	"Managed", "Mngd",
+	"Microsoft", "MS",
+	"Development", "Dev",
+	"Device", "Dev",
+	"Database", "DB",
+	"ThinkBox", "TB",
+	"Authority", "Auth",
+	"Distribution", "Distr",
+	"Directory", "Dir",
+	"Instance", "Inst",
+	"Virtual", "Virt",
+	"Database", "DB",
+	"Attributes", "Atts",
+	"Attribute", "Att",
+	"Security", "Sec",
+	"Service", "Svc",
+	"Credential", "Cred",
+	"Emergency", "Emerg",
+	"Function", "Func",
+	"Organizational", "Org",
+	"SThreeSThree", "SThree",
+}
+
 func replaceNumberWithStrings(s string) string {
 	for k, v := range numMap {
 		s = strings.ReplaceAll(s, k, v)
 	}
 	return s
+}
+
+func getInkscapeVersion(binPath string, helpArgs ...string) (string, error) {
+	return runCommandWithArgumentsGetStdOut(binPath, helpArgs...)
+}
+
+func runCommandWithArgumentsGetStdOut(binPath string, args ...string) (string, error) {
+	log.Println("runCommandWithArgumentsGetStdOut", binPath, args)
+	out, err := exec.Command(binPath, args...).Output()
+	return string(out), err
+}
+
+func runCommandReadStdin(r io.Reader, binPath string, args ...string) (string, error) {
+	cmd := exec.Command(binPath, args...)
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		return "", err
+	}
+	var funcError error
+	go func() {
+		defer func() {
+			if funcError = stdin.Close(); err != nil {
+				return
+			}
+		}()
+		_, funcError = io.Copy(stdin, r)
+		return
+	}()
+
+	// If there is a problem with running inkscape...
+	stdoutStderr, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Printf("%s\n", stdoutStderr)
+		return string(stdoutStderr), err
+	}
+	if funcError != nil {
+		return "", funcError
+	}
+	return "", nil
 }

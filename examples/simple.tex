@@ -12,33 +12,38 @@
 \usepackage{tocloft}
 \usepackage{fancyhdr}
 
+
+
 %% Vertically center image on line
 %% From https://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other?rq=1
 \newcommand{\vcenteredinclude}[1]{\begingroup
 \setbox0=\hbox{#1}%
 \parbox{\wd0}{\box0}\endgroup}
 
+\graphicspath{{../icons_tex/}}
+\input{../tex/macros}
 
 \begin{document}
 
-Here is an Arch icon:
-\includegraphics[width=.8cm]{../icons_tex/Arch_Amazon-API-Gateway_64.pdf}
 
-\vspace{1cm}
-The same larger: \includegraphics[width=5cm]{../icons_tex/Arch_Amazon-API-Gateway_64.pdf}
+%% Here is a Services icon:
+%% \includegraphics[width=.8cm]{Arch_Amazon-API-Gateway_64.pdf}
 
-\vspace{1cm}
-The same centered in the line \vcenteredinclude{\includegraphics[width=0.8cm]{../icons_tex/Arch_Amazon-API-Gateway_64.pdf}} like this.
+%% \vspace{1cm}
+%% The same larger: \includegraphics[width=5cm]{Arch_Amazon-API-Gateway_64.pdf}
+
+%% \vspace{1cm}
+%% The same centered in the line \vcenteredinclude{\includegraphics[width=0.8cm]{Arch_Amazon-API-Gateway_64.pdf}} like this.
 
 \vspace{3cm}
 
-Here is an Res icon:
-\includegraphics[width=.8cm]{../icons_tex/Res_AWS-Amazon-Simple-Storage_S3-Replication_48_Light.pdf}
+Here is an Resources icon, S3 Replication, using macro: \texttt{{\textbackslash}RThreeRepli{.8cm}}\ \  which uses icon PDF file \texttt{Res\_AWS-Amazon-Simple-Storage\_S3-Replication\_48\_Light.pdf}:
+\RSThreeRepli{.8cm}
 
 \vspace{2cm}
-The same larger: \includegraphics[width=5cm]{../icons_tex/Res_AWS-Amazon-Simple-Storage_S3-Replication_48_Light.pdf}
+The same larger, size=5cm: \RSThreeRepli{5cm}
 
 \vspace{1cm}
-The same centered in the line \vcenteredinclude{\includegraphics[width=0.8cm]{../icons_tex/Res_AWS-Amazon-Simple-Storage_S3-Replication_48_Light.pdf}} like this.
+The same, size 0.8cm, centered in the line \vcenteredinclude{\RSThreeRepli{.8cm}} like this.
 
 \end{document}

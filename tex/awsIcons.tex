@@ -43,13 +43,13 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 %% Arch and Res sections start/end
-\newcommand{\archStart}{\section{Architecture}\begin{multicols}{2}\footnotesize}
+\newcommand{\archStart}{\section{Services}\begin{multicols}{2}\footnotesize}
 \newcommand{\archEnd}{\end{multicols}\clearpage}
 \newcommand{\resStart}{\newpage\section{Resources}\begin{multicols}{2}\footnotesize}
 \newcommand{\resEnd}{\end{multicols}\clearpage}
 
 %% Command used for each icon entry
-\newcommand{\gxs}[4]{\vcenteredinclude{#2}{\hspace{3mm} \begin{minipage}{\minipagespacing}{\bf \small{#1}}\\ \tt \seqsplit{#3} \\\tt Macro: \seqsplit{#4} \end{minipage}}\vspace{\vspacing}\newline}
+\newcommand{\gxs}[5]{\vcenteredinclude{#2}{\hspace{3mm} \begin{minipage}{\minipagespacing}{\bf \small{#1}}\\ \tt \seqsplit{#3} \\\tt Macro:\seqsplit{#4}\index[macros]{#4 (#5)} \end{minipage}}\vspace{\vspacing}\newline}
 
 \input{macros}
 
@@ -78,6 +78,7 @@
 
 %% Ref to index: From https://tex.stackexchange.com/questions/182710/how-to-reference-the-index
 \makeindex[intoc,title={Index\label{index}}]
+\makeindex[name=macros, intoc,title={\LaTeX Macros\label{macros}}]
 
 %% "Too many open files" problem: From: https://stackoverflow.com/questions/1715677/error-too-many-open-files-in-pdflatex/1720556#1720556
 \let\mypdfximage\pdfximage
@@ -97,15 +98,22 @@
 
 %%%%%%
 \section{What is this?}
+\LaTeX\ style which allows you to use the \href{https://aws.amazon.com/architecture/icons/}{AWS architectural icons} in your \LaTeX documents.
+
+\vspace{3mm}
+
+The SVG versions of the icons are converted to {\LaTeX}--compatible PDF form using \href{https://inkscape.org/}{Inkscape} {\tt ({\inkscapeVersion})}
+using the purpose written Go program \href{https://github.com/gnewton/awsArchIcons2LaTeX/aws2tex}{aws2tex}.
+
+This Go program, \texttt{aws2tex} creates:
 \begin{itemize}
-\item List of AWS icons, converted to {\LaTeX}--compatible form using \href{https://inkscape.org/}{Inkscape} {\tt (v0.92.4 (5da689c313, 2019-01-14))}
-  using the Go program \href{https://github.com/gnewton/awsArchIcons2LaTeX/aws2tex}{aws2tex}.
-  This Go program also generates the icons portion (\LaTeX) of this document.
-\item All generated icons are written to the \texttt{icons\_tex} directory.
-\item This document is to illustrate as well as index these icons. In order to keep the size of this document manageable, it only contains:
+\item The icons portion of this document (\texttt{\\input{icons}})
+\item Using Inkscape, all of the icons are converted and are written to the \texttt{icons\_tex} directory.
+\item This document, which is to illustrate as well as index these icons and their corresponding \LaTeX maceos.
+  Not all icons are converted:
   \begin{itemize}
-  \item For Resources, only the \texttt{\_Light} versions. The \texttt{\_Dark} are omitted.
-  \item For Architecture, only the \texttt{\_64} versions. The lower resolution \texttt{\_16,\_32,\_48} are omitted.
+  \item For \textit{Resources}, only the \texttt{\_Light} versions. The \texttt{\_Dark} are omitted.
+  \item For \textit{Architecture}, only the \texttt{\_64} versions. The lower resolution \texttt{\_16,\_32,\_48} are omitted.
   \end{itemize}
   While the above icons are omitted in the document, they are all included and available for use, in the \texttt{icons\_tex} directory.\\
   For instructions on how to generate this document with \textit{all} icons, please see the instructions in the README.md at the github repo.
@@ -119,6 +127,7 @@ Icons can be added to \LaTeX\ documents using the \texttt{{\textbackslash}includ
 
 \begin{blockquote}
 \begin{verbatim}
+\graphicspath{{../icons_tex/}}
 Here is an API Gateway: 
   \includegraphics[width=1cm]{../icons_tex/Arch_Amazon-API-Gateway_64.pdf}
 \end{verbatim}
@@ -137,7 +146,8 @@ See the \href{https://github.com/gnewton/awsArchIcons2LaTeX/examples}{examples} 
   
 \section{Source}
 AWS Architecture Icons from \url{https://aws.amazon.com/architecture/icons/}.\\
-Assets package used: \href{https://d1.awsstatic.com/webteam/architecture-icons/Q32020/AWS-Architecture-Assets-For-Light-and-Dark-BG_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip}{\seqsplit{AWS-Architecture-Assets-For-Light-and-Dark-BG\_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip}}
+%Assets package used: \href{https://d1.awsstatic.com/webteam/architecture-icons/Q32020/{\assetZipFile}}{\seqsplit{\assetZipFile}}
+Assets package used: \href{https://d1.awsstatic.com/webteam/architecture-icons/Q32020/\assetZipFile}{\assetZipFile}
 
 \vspace{3cm}
 \noindent \copyright\ Glen Newton 2020\\
@@ -155,5 +165,6 @@ Icons in this document (I believe) are \ \copyright\ Amazon Web Services (AWS)
 \normalsize
 
 \printindex
+\printindex[macros]
 
 \end{document}

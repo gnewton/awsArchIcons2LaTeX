@@ -16,3 +16,13 @@
 
 # emacs
 *~
+
+# tex
+*.aux
+*.idx
+*.log
+*.ilg
+*.ind
+*.toc
+\#*#
+__MACOSX
