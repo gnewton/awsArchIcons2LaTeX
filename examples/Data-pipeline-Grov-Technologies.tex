@@ -78,7 +78,7 @@
   \node (s3Label)[below of= s3,align=center,yshift=4.5mm]{\tiny AWS S3 \\[-2mm] \tiny Data Bucket};
 
   \node (s3AboveAngle) [shape=coordinate,above of = s3,yshift=-3mm] {};
-  \node (images) [shape=coordinate,left of = s3AboveAngle, xshift=-7cm] {};
+  \node (images) [shape=coordinate,left of = s3AboveAngle, xshift=-6.8cm] {};
     \node (topEdge)[black,left of=images,align=center, xshift=-1mm] {\tiny \textbf{Gr\"{o}v CEA Edge}};
 
   \node (glue)[right of= s3,xshift=1cm]{\AGlue{1cm}};
@@ -105,7 +105,7 @@
   
   %%%%%%%%%%%%%%
   \draw[<->,gray] (preCore) -- (sensorData)node[pos=.5,above,align=center, black]{\tiny \textbf{Certificate--based} \\[-2mm] \tiny \textbf{authentication}}  node[pos=.5,below, black,align=center]{\tiny \textbf{Sensor Data}};
-  \draw[-,gray]  (images) -- (s3AboveAngle)node[pos=.15,above,align=center, black]{\tiny \textbf{Authenticates} \\[-2mm] \tiny \textbf{with AWS} \\[-2mm] \tiny \textbf{Greengrass} \\[-2mm] \tiny \textbf{Resource Role}} node[pos=.15,below, black,align=center]{\tiny \textbf{Upload processed} \\[-2mm] \tiny \textbf{images}};
+  \draw[-,gray]  (images) -- (s3AboveAngle)node[pos=.12,above,align=center, black]{\tiny \textbf{Authenticates} \\[-2mm] \tiny \textbf{with AWS} \\[-2mm] \tiny \textbf{Greengrass} \\[-2mm] \tiny \textbf{Resource Role}} node[pos=.12,below, black,align=center]{\tiny \textbf{Upload processed} \\[-2mm] \tiny \textbf{images}};
   \draw[->,gray]  (s3AboveAngle) -- (s3);
   
   \draw[-,gray]   ([xshift=-1.2mm]core.east) -- (split);
