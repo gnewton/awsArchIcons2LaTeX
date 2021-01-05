@@ -81,6 +81,7 @@ func main() {
 
 	fmt.Fprintf(wStyle, "\\newcommand{\\assetZipFile}{%s}\n", strings.ReplaceAll(argAssetZipFile, "_", "\\_"))
 	fmt.Fprintf(wStyle, "\\newcommand{\\inkscapeVersion}{%s}\n", strings.ReplaceAll(inkscapeVersion, "_", "\\_"))
+	fmt.Fprintln(wStyle, "\\definecolor{awsOrange}{RGB}{255 153 0}")
 	fmt.Fprintln(wStyle, "%%%%%%%%%%%%%%%%")
 	printMacros(wStyle, res_entries)
 	printMacros(wStyle, arch_entries)

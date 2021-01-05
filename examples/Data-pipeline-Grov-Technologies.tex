@@ -21,25 +21,15 @@
     urlcolor={blue!80!black}
 }
 
+\definecolor{awsOrange}{RGB}{255 153 0}
 \renewcommand{\familydefault}{\sfdefault}
 
 \definecolor{reactColor}{RGB}{102,255,255}
 
 \begin{document}
-%% \section{Example: AWS Architecture blog: \textit{Building a Controlled Environment Agriculture Platform}}
-%% \noindent Example taken from AWS Architecture Blog\footnote{\url{https://aws.amazon.com/blogs/architecture}}, 
-%% \textit{Building a Controlled Environment Agriculture Platform}\footnote{\url{https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/}}, by Ashu Joshi, 2020.12.22.
-%% Original diagrm\footnote{\url{https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2020/12/21/Data-pipeline-Grov-Technologies-1024x374.png}} recreated, using \href{https://ctan.org/pkg/pgf?lang=en}{tikz} and the \href{https://github.com/gnewton/awsArchIcons2LaTeX}{awsicons} package.
-%% \pagenumbering{gobble}
-%% \newpage
-%% \begin{landscape}
-%% \section{Original diagram (PNG image)}
-%% \includegraphics[width=20cm] {Data-pipeline-Grov-Technologies-1024x374.png}
-
-%% \section{Recreated diagram}
 \begin{tikzpicture}[%
     %% AWS has no React symbol
-    %% From: https://tex.stackexchange.com/questions/349960/how-to-draw-a-symbol-on-a-tikz-node-that-can-be-reused
+    %% Derived from: https://tex.stackexchange.com/questions/349960/how-to-draw-a-symbol-on-a-tikz-node-that-can-be-reused
     atom/.style = {shape=coordinate,minimum size=#1,
       append after command={%
         \pgfextra{ 
@@ -51,10 +41,11 @@
     }
   ]
 
-  \draw [draw=black,thick] (-1,-3.5) rectangle (13,4.7);
-
+  \draw [draw=awsOrange,thick] (-1,-3.5) rectangle (13,4.7);
+  \node (awsCloud) at (-.15,4.5) {\footnotesize AWS Cloud};
 
   \node (core) {\AIoTCore{1cm}};
+
   \node (preCore)[shape=coordinate,left of=core,align=center] {};
   \node (sensorData)[shape=coordinate,left of=preCore,align=center,xshift=-8mm] {};
 
