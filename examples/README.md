@@ -12,4 +12,4 @@ Here is the diagram from that blog post:
 
 asdfasdf
 
-<img src="https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.png" alt="drawing" style="width:1024px;"/>
+<img src="https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.png" alt="Diagram re-created using aswicons.sty" style="width:2000px;"/>
