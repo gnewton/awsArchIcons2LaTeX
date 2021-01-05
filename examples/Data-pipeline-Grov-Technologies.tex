@@ -24,7 +24,7 @@
 \definecolor{awsOrange}{RGB}{255 153 0}
 \renewcommand{\familydefault}{\sfdefault}
 
-\definecolor{reactColor}{RGB}{102,255,255}
+\definecolor{reactColor}{RGB}{97,219,252}
 
 \begin{document}
 \begin{tikzpicture}[%
@@ -90,7 +90,7 @@
   \node (quicksight)[right of= athena,xshift=1cm]{\AQuickSight{1cm}};
   \node (quicksightLabel)[below of= quicksight,align=center,yshift=3.5mm]{\tiny Amazon QuickSite};
   
-  \node (lambdaFunction)[right of= kinesis,xshift=.5cm]{\RLambdaLambdaFunc{.55cm}};
+  \node (lambdaFunction)[right of= kinesis,xshift=.5cm]{\RLambdaLambdaFunc{.65cm}};
   \node (aggrDynamo)[right of= lambdaFunction,xshift=.5cm]{\ADDB{1cm}};
   \node (aggrDynamoLabel)[below of= aggrDynamo,align=center,yshift=2.5mm]{\tiny Amazon DynamoDB \\[-2mm] \tiny Aggregated Data};
   \node (lambda)[right of= aggrDynamo,xshift=1cm]{\ALambda{1cm}};
@@ -100,7 +100,7 @@
   \node (apiGatewayLabel)[below of= apiGateway,align=center,yshift=3.5mm]{\tiny Amazon API Gateway};
 
   \node (nearReact) [shape=coordinate,right of= apiGateway, xshift=0.5cm]{};
-  \node (react) [draw, atom=9mm, right of= apiGateway, xshift=1.2cm]{};
+  \node (react) [draw, atom=10mm, right of= apiGateway, xshift=1.2cm]{};
   \node (reactLabel)[below of= react,align=center,yshift=2.5mm]{\tiny React--based Operational \\[-2mm] \tiny Dashboard};
   
   %%%%%%%%%%%%%%
