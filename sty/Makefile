@@ -1,0 +1,2 @@
+clean:
+	-rm *.sty *.tex

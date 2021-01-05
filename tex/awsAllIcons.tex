@@ -1,0 +1,202 @@
+
+% Copyright Glen Newton glen.newton@gmail.com
+%
+\documentclass[12pt]{article}
+\usepackage{imakeidx}
+\usepackage{hyperref}
+\usepackage[most]{tcolorbox}
+%\usepackage{savetrees}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{multicol}
+\usepackage{seqsplit}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage[export]{adjustbox}
+
+\usepackage[inner=10mm,outer=10mm]{geometry}
+
+
+\usepackage{../sty/awsicons} 
+
+\graphicspath{{../icons_tex/}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\LaTeX\ Style for AWS Service and Resource Icons}
+\author{Glen Newton \\\texttt{\href{mailto:glen.newton@gmail.com}{glen.newton@gmail.com}}}
+
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Change below lines to change look of document %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\hyperref[index]{General Index}}
+\cfoot{\hyperref[macros]{Macro Index}}
+\lfoot{\hyperref[toc]{TOC}}
+
+\rhead{Page \thepage}
+\chead{\href{https://github.com/gnewton/awsArchIcons2LaTeX}{awsArchIcons2LaTeX}}
+
+\newcommand{\iconsize}{1cm}
+\newcommand{\entrySpacing}{2mm}
+\newcommand{\minipagespacing}{8cm}
+%\renewcommand{\familydefault}{\sfdefault}
+
+%% Arch and Res sections start/end
+\newcommand{\archStart}{\section{Services}\begin{multicols}{2}\footnotesize}
+\newcommand{\archEnd}{\end{multicols}\clearpage}
+\newcommand{\resStart}{\newpage\section{Resources}\begin{multicols}{2}\footnotesize}
+\newcommand{\resEnd}{\end{multicols}\clearpage}
+
+%% Command used for each icon entry
+%\newcommand{\gxs}[5]{\vcenteredinclude{#2}{\hspace{3mm} \begin{minipage}{\minipagespacing}{\bf \small{#1}}\\ {\footnotesize \tt \seqsplit{#3}} \\\tt Macro:\seqsplit{#4}\index[macros]{#4 (#5)} \end{minipage}}\vspace{\vspacing}\newline}
+
+\newcommand{\gxs}[5]{
+\noindent\begin{tabularx}{9cm}{p{9mm}p{8.1cm}}
+               {#2}&
+               #1\newline
+               #3\newline
+               Macro: #4 \index[macros]{#4 (#5)}\newline \\
+\end{tabularx}
+\vspace{\entrySpacing}
+}
+
+%% From: https://tex.stackexchange.com/a/847
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Do not change rest of preamble (below this line) unless you know what
+%% you are doing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% From: https://codepunk.io/change-the-background-color-of-a-blockquote-in-latex-2/
+\definecolor{block-gray}{gray}{.75}
+\newtcolorbox{blockquote}{colback=block-gray,grow to right by=-1mm,grow to left by=-1mm,boxrule=0pt,boxsep=0pt,breakable}
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+\makeatletter
+\appto{\endmulticols}{\@doendpe}
+\makeatother
+
+%% Ref to index: From https://tex.stackexchange.com/questions/182710/how-to-reference-the-index
+\makeindex[intoc,title={Index: General\label{index}}]
+\makeindex[name=macros, intoc,title={Index: \LaTeX \ \ Macros\label{macros}}]
+
+%% "Too many open files" problem: From: https://stackoverflow.com/questions/1715677/error-too-many-open-files-in-pdflatex/1720556#1720556
+\let\mypdfximage\pdfximage
+\def\pdfximage{\immediate\mypdfximage}
+
+ \newcommand{\vcenteredinclude}[1]{\begingroup
+   \setbox0=\hbox{#1}%
+   \parbox[t]{\wd0}{\box0}\endgroup}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\maketitle
+\tableofcontents\label{toc}
+%\clearpage
+\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+
+%%%%%%
+\section{What is this?}
+\LaTeX\ style (\texttt{awsicons.sty}) which allows you to use the \href{https://aws.amazon.com/architecture/icons/}{AWS architectural icons} in your \LaTeX\  documents.
+
+\vspace{3mm}
+
+\noindent The AWS SVG icons are converted to {\LaTeX}--compatible PDF form using \href{https://inkscape.org/}{Inkscape} \texttt{\inkscapeVersion} using the purpose--written Go program \href{https://github.com/gnewton/awsArchIcons2LaTeX/aws2tex}{aws2tex}. 
+
+\noindent This Go program, \texttt{aws2tex}, creates:
+\begin{itemize}
+\item \texttt{awsicons.sty} file
+\item \LaTeX--compatible PDF versions of icons (and written to the \texttt{icons\_tex} directory, using Inkscape).
+\item This document, which is to illustrate as well as index these icons and their corresponding \LaTeX\ \  macros.
+  \newline
+  \textbf{NB:} Not all icons are converted:
+  \begin{itemize}
+  \item For \textit{Resources}, only the \texttt{\_Light} versions. The \texttt{\_Dark} are omitted.
+  \item For \textit{Services}, only the \texttt{\_64} versions. The lower resolution \texttt{\_16,\_32,\_48} are omitted.
+  \end{itemize}
+  
+\noindent For instructions on how to generate this document with \textit{all} icons, please see the instructions in the \href{https://github.com/gnewton/awsArchIcons2LaTeX}{README.md} at the github repo.\\
+This document is: \url{https://github.com/gnewton/awsArchIcons2LaTeX/awsAllIcons.pdf}
+\end{itemize}
+
+
+%%%%%%
+\section{How to use it?}
+Icons can be added to \LaTeX\ documents using the \LaTeX macros defined in the package, \texttt{awsicons.sty}. All you need to do is use the package AND add the directory containing all the gnerated icons to the \texttt{{\textbackslash}graphicspath\{...\}}.\\
+For example:
+
+\begin{blockquote}
+\begin{verbatim}
+% preamble
+\usepackage{../sty/awsicons} 
+\graphicspath{../icons_tex/}
+% after \begin{document}
+Here is a 1cm API Gateway:
+\RAPIGatewayEndpoint{1cm}
+
+Here is a 3cm Lambda function:
+\RLambdaLambdaFunc{3cm}
+
+\end{verbatim}
+\end{blockquote}
+
+\noindent Resulting in:\\
+\begin{blockquote}
+Here is a 1cm API Gateway:
+\RAPIGatewayEndpoint{1cm}
+
+Here is a 3cm Lambda function:
+\RLambdaLambdaFunc{3cm}
+
+\end{blockquote}
+
+[Without the gray background]
+    
+%%%%%%
+\subsection{Examples}
+There are more complex examples in the \href{https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/examples}{examples} directory, including one which recreates an AWS Architecture blog diagram.
+
+\begin{itemize}
+\item \href{https://github.com/gnewton/awsArchIcons2LaTeX/blob/main/examples/simple.pdf}{Simple example}
+\item \textit{\href{https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.pdf}{Building a Controlled Environment Agriculture Platform}\footnote{\url{https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/}}}, by Ashu Joshi, 2020.12.22.
+\end{itemize}
+  
+\section{Sources}
+The AWS Architecture icons used here are from \url{https://aws.amazon.com/architecture/icons/}.\\
+The specific assets package used: \href{https://d1.awsstatic.com/webteam/architecture-icons/Q32020/\assetZipFile}{\assetZipFile}
+
+\vspace{3cm}
+\noindent \copyright\ Glen Newton 2020\\
+Icons in this document (I believe) are: \ \copyright\ Amazon Web Services (AWS)
+\vspace{5mm}
+
+\setlength{\parindent}{0pt}
+
+%%%%%%%%%%%%% ICON CONTENT: generated by aws2tex:
+\input{icons.tex}
+
+
+%%%%%%%%%%%%% INDEXES
+\normalsize
+
+\printindex
+\printindex[macros]
+
+\end{document}

@@ -11,7 +11,12 @@
 \usepackage{etoolbox}
 \usepackage{tocloft}
 \usepackage{fancyhdr}
+\usepackage[export]{adjustbox}
 
+%%% This is the aws icons style
+\usepackage{../sty/awsicons} 
+%% Also needed!!
+\graphicspath{{../icons_tex/}}
 
 
 %% Vertically center image on line
@@ -19,9 +24,6 @@
 \newcommand{\vcenteredinclude}[1]{\begingroup
 \setbox0=\hbox{#1}%
 \parbox{\wd0}{\box0}\endgroup}
-
-\graphicspath{{../icons_tex/}}
-\input{../tex/macros}
 
 \begin{document}
 

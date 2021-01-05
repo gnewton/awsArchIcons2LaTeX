@@ -1,20 +1,42 @@
 %
 % https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/
 % https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2020/12/21/Data-pipeline-Grov-Technologies-1024x374.png
-
-\documentclass[border=40pt]{standalone}
-
+%\documentclass[border=40pt]{standalone}
+\documentclass{article}
 \usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{pdflscape}
+\usepackage[export]{adjustbox}
 
-\renewcommand{\familydefault}{\sfdefault}
-
+%%% This is the aws icons style
+\usepackage{../sty/awsicons} 
+%% Also needed!!
 \graphicspath{{../icons_tex/}}
 
-\input{../tex/macros}
+%% From: https://tex.stackexchange.com/a/847
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+\renewcommand{\familydefault}{\sfdefault}
 
 \definecolor{reactColor}{RGB}{102,255,255}
 
 \begin{document}
+\section{Example: AWS Architecture blog: \textit{Building a Controlled Environment Agriculture Platform}}
+\noindent Example taken from AWS Architecture Blog\footnote{\url{https://aws.amazon.com/blogs/architecture}}, 
+\textit{Building a Controlled Environment Agriculture Platform}\footnote{\url{https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/}}, by Ashu Joshi, 2020.12.22.
+Original diagrm\footnote{\url{https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2020/12/21/Data-pipeline-Grov-Technologies-1024x374.png}} recreated, using \href{https://ctan.org/pkg/pgf?lang=en}{tikz} and the \href{https://github.com/gnewton/awsArchIcons2LaTeX}{awsicons} package.
+\pagenumbering{gobble}
+\newpage
+\begin{landscape}
+\section{Original diagram (PNG image)}
+\includegraphics[width=20cm] {Data-pipeline-Grov-Technologies-1024x374.png}
+
+\section{Recreated diagram}
 \begin{tikzpicture}[%
     %% AWS has no React symbol
     %% From: https://tex.stackexchange.com/questions/349960/how-to-draw-a-symbol-on-a-tikz-node-that-can-be-reused
@@ -36,7 +58,7 @@
   \node (preCore)[shape=coordinate,left of=core,align=center] {};
   \node (sensorData)[shape=coordinate,left of=preCore,align=center,xshift=-8mm] {};
 
-  \node (botEdge)[black,left of=sensorData,align=center, xshift=-1mm] {\tiny \textbf{Grov CEA Edge}};
+  \node (botEdge)[black,left of=sensorData,align=center, xshift=-1mm] {\tiny \textbf{Gr\"{o}v CEA Edge}};
   \node (coreLabel)[below of=core,align=center,yshift=3.5mm] {\tiny AWS IoT Core};
   \node (split) [shape=coordinate,right of= core] {};
   \node (topAngle) [shape=coordinate,above of = split,yshift=1.2cm] {};
@@ -66,7 +88,7 @@
 
   \node (s3AboveAngle) [shape=coordinate,above of = s3,yshift=-3mm] {};
   \node (images) [shape=coordinate,left of = s3AboveAngle, xshift=-7cm] {};
-    \node (topEdge)[black,left of=images,align=center, xshift=-1mm] {\tiny \textbf{Grov CEA Edge}};
+    \node (topEdge)[black,left of=images,align=center, xshift=-1mm] {\tiny \textbf{Gr\"{o}v CEA Edge}};
 
   \node (glue)[right of= s3,xshift=1cm]{\AGlue{1cm}};
   \node (glueLabel)[below of= glue,align=center,yshift=3.5mm]{\tiny Amazon Glue};
@@ -123,25 +145,9 @@
   \draw[->,gray]  (apiGateway) -- (nearReact);
 
   
-  
     
 \end{tikzpicture}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\end{landscape}
 
 \end{document}
 

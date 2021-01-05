@@ -27,20 +27,14 @@ type Entry struct {
 
 const MACOS_PREFIX = "__MACOSX"
 
-const StartArch = "\\archStart"
-const EndArch = "\\archEnd"
-const StartRes = "\\resStart"
-const EndRes = "\\resEnd"
-
 var argAssetZipFile string = "AWS-Architecture-Assets-For-Light-and-Dark-BG_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip"
 var argConvertSvgWithInkscape = true
 var argIconsFile string = "tex/icons.tex"
+var argStyleFile string = "sty/awsicons.sty"
 var argInkscapeBinPath string = "/usr/bin/inkscape"
-
 var argInkscapeHelpArgs []string = []string{"--version"}
 
-//var argInkscapeHelpArgs []string = []string{"--version", "--without-gui"}
-var argMacrosFile string = "tex/macros.tex"
+//var argMacrosFile string = "tex/macros.tex"
 var argPdfTexOutDir string = "icons_tex"
 var argShowAllArch bool = false
 var argShowAllRes bool = false
@@ -62,16 +56,16 @@ func main() {
 	sort.Sort(ByName(res_entries))
 	sort.Sort(ByName(arch_entries))
 
-	macrosFile, err := os.Create(argMacrosFile)
+	styleFile, err := os.Create(argStyleFile)
 	if err != nil {
 		log.Panic(err)
 	}
-	wmacros := bufio.NewWriter(macrosFile)
+	wStyle := bufio.NewWriter(styleFile)
 	defer func() {
-		if err = wmacros.Flush(); err != nil {
+		if err = wStyle.Flush(); err != nil {
 			log.Panic(err)
 		}
-		if err := macrosFile.Close(); err != nil {
+		if err := styleFile.Close(); err != nil {
 			log.Panic(err)
 		}
 	}()
@@ -81,11 +75,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Fprintf(wmacros, "\\newcommand{\\assetZipFile}{%s}\n", strings.ReplaceAll(argAssetZipFile, "_", "\\_"))
-	fmt.Fprintf(wmacros, "\\newcommand{\\inkscapeVersion}{%s}\n", strings.ReplaceAll(inkscapeVersion, "_", "\\_"))
-	fmt.Fprintln(wmacros, "%%%%%%%%%%%%%%%%")
-	printMacros(wmacros, res_entries)
-	printMacros(wmacros, arch_entries)
+	fmt.Fprintf(wStyle, "%% Using https://www.overleaf.com/learn/latex/Writing_your_own_package\n")
+	fmt.Fprintf(wStyle, "\\NeedsTeXFormat{LaTeX2e}\n")
+	fmt.Fprintf(wStyle, "\\ProvidesClass{awsicons}[2020/01/03 AWS Architectural Icons]\n")
+
+	fmt.Fprintf(wStyle, "\\newcommand{\\assetZipFile}{%s}\n", strings.ReplaceAll(argAssetZipFile, "_", "\\_"))
+	fmt.Fprintf(wStyle, "\\newcommand{\\inkscapeVersion}{%s}\n", strings.ReplaceAll(inkscapeVersion, "_", "\\_"))
+	fmt.Fprintln(wStyle, "%%%%%%%%%%%%%%%%")
+	printMacros(wStyle, res_entries)
+	printMacros(wStyle, arch_entries)
 
 	iconsFile, err := os.Create(argIconsFile)
 	if err != nil {
@@ -165,8 +163,8 @@ func processAWSIcons(src string, dest string) ([]*Entry, []*Entry, error) {
 		cleanName := cleanAll(justF)
 		macroName := string(justF[0]) + makeMacroName(cleanName)
 
-		entryString := fmt.Sprintf("\\gxs{%s %s} {\\includegraphics[width=\\iconsize\\textwidth]{%s}} {%s} {{\\textbackslash}%s} {%s}",
-			makeSearchLink(cleanName), index(cleanName), justF, strings.ReplaceAll(justF, "_", "\\_"), macroName, cleanName)
+		entryString := fmt.Sprintf("\\gxs{%s %s} {\\%s{\\iconsize}} {%s} {{\\textbackslash}%s} {%s}",
+			makeSearchLink(cleanName), index(cleanName), macroName, strings.ReplaceAll(justF, "_", "\\_"), macroName, cleanName)
 
 		entry := Entry{
 			sortName:  cleanName,
@@ -410,7 +408,7 @@ func printMacros(w io.Writer, entries []*Entry) {
 			log.Printf("*******************ZZZ  %+v", *entry)
 		}
 		if entry.chosen {
-			fmt.Fprintf(w, "\\newcommand{\\%s}[1]{\\includegraphics[width=#1]{%s}}\n",
+			fmt.Fprintf(w, "\\newcommand{\\%s}[1]{\\includegraphics[width=#1,valign=t]{%s}}\n",
 				entry.macroName, entry.filename)
 		}
 	}
@@ -519,43 +517,4 @@ func replaceNumberWithStrings(s string) string {
 		s = strings.ReplaceAll(s, k, v)
 	}
 	return s
-}
-
-func getInkscapeVersion(binPath string, helpArgs ...string) (string, error) {
-	return runCommandWithArgumentsGetStdOut(binPath, helpArgs...)
-}
-
-func runCommandWithArgumentsGetStdOut(binPath string, args ...string) (string, error) {
-	log.Println("runCommandWithArgumentsGetStdOut", binPath, args)
-	out, err := exec.Command(binPath, args...).Output()
-	return string(out), err
-}
-
-func runCommandReadStdin(r io.Reader, binPath string, args ...string) (string, error) {
-	cmd := exec.Command(binPath, args...)
-	stdin, err := cmd.StdinPipe()
-	if err != nil {
-		return "", err
-	}
-	var funcError error
-	go func() {
-		defer func() {
-			if funcError = stdin.Close(); err != nil {
-				return
-			}
-		}()
-		_, funcError = io.Copy(stdin, r)
-		return
-	}()
-
-	// If there is a problem with running inkscape...
-	stdoutStderr, err := cmd.CombinedOutput()
-	if err != nil {
-		log.Printf("%s\n", stdoutStderr)
-		return string(stdoutStderr), err
-	}
-	if funcError != nil {
-		return "", funcError
-	}
-	return "", nil
 }

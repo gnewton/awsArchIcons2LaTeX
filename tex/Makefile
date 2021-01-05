@@ -1,7 +1,7 @@
 
 all:
-	pdflatex awsIcons; pdflatex awsIcons; makeindex awsIcons.idx; pdflatex awsIcons; cp awsIcons.pdf ..
+	pdflatex awsAllIcons; pdflatex awsAllIcons; makeindex awsAllIcons.idx; pdflatex awsAllIcons; cp awsAllIcons.pdf ..
 
 clean:
-	rm *.aux *.idx *.ilg *.ind *.out *.toc *~ *.log
+	-rm *.aux *.idx *.ilg *.ind *.out *.toc *~ *.log
 
