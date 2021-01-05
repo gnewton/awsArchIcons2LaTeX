@@ -8,8 +8,6 @@ Here is the diagram from that blog post:
 
 ![altalt](https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2020/12/21/Data-pipeline-Grov-Technologies-1024x374.png "Building a Controlled Environment Agriculture Platform Diagram")
 
-![Diagram re-created using aswicons.sty](https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.png =1024x "Diagram re-created using aswicons.sty")
-
-asdfasdf
+### Diagram re-created using aswicons.sty
 
 <img src="https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.png" alt="Diagram re-created using aswicons.sty" style="width:2000px;"/>
