@@ -1,8 +1,8 @@
 %
 % https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/
 % https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2020/12/21/Data-pipeline-Grov-Technologies-1024x374.png
-%\documentclass[border=40pt]{standalone}
-\documentclass{article}
+\documentclass[border=1pt]{standalone}
+%\documentclass{article}
 \usepackage{tikz}
 \usepackage{hyperref}
 \usepackage{pdflscape}
@@ -26,17 +26,17 @@
 \definecolor{reactColor}{RGB}{102,255,255}
 
 \begin{document}
-\section{Example: AWS Architecture blog: \textit{Building a Controlled Environment Agriculture Platform}}
-\noindent Example taken from AWS Architecture Blog\footnote{\url{https://aws.amazon.com/blogs/architecture}}, 
-\textit{Building a Controlled Environment Agriculture Platform}\footnote{\url{https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/}}, by Ashu Joshi, 2020.12.22.
-Original diagrm\footnote{\url{https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2020/12/21/Data-pipeline-Grov-Technologies-1024x374.png}} recreated, using \href{https://ctan.org/pkg/pgf?lang=en}{tikz} and the \href{https://github.com/gnewton/awsArchIcons2LaTeX}{awsicons} package.
-\pagenumbering{gobble}
-\newpage
-\begin{landscape}
-\section{Original diagram (PNG image)}
-\includegraphics[width=20cm] {Data-pipeline-Grov-Technologies-1024x374.png}
+%% \section{Example: AWS Architecture blog: \textit{Building a Controlled Environment Agriculture Platform}}
+%% \noindent Example taken from AWS Architecture Blog\footnote{\url{https://aws.amazon.com/blogs/architecture}}, 
+%% \textit{Building a Controlled Environment Agriculture Platform}\footnote{\url{https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/}}, by Ashu Joshi, 2020.12.22.
+%% Original diagrm\footnote{\url{https://d2908q01vomqb2.cloudfront.net/fc074d501302eb2b93e2554793fcaf50b3bf7291/2020/12/21/Data-pipeline-Grov-Technologies-1024x374.png}} recreated, using \href{https://ctan.org/pkg/pgf?lang=en}{tikz} and the \href{https://github.com/gnewton/awsArchIcons2LaTeX}{awsicons} package.
+%% \pagenumbering{gobble}
+%% \newpage
+%% \begin{landscape}
+%% \section{Original diagram (PNG image)}
+%% \includegraphics[width=20cm] {Data-pipeline-Grov-Technologies-1024x374.png}
 
-\section{Recreated diagram}
+%% \section{Recreated diagram}
 \begin{tikzpicture}[%
     %% AWS has no React symbol
     %% From: https://tex.stackexchange.com/questions/349960/how-to-draw-a-symbol-on-a-tikz-node-that-can-be-reused
@@ -147,7 +147,7 @@ Original diagrm\footnote{\url{https://d2908q01vomqb2.cloudfront.net/fc074d501302
   
     
 \end{tikzpicture}
-\end{landscape}
+%\end{landscape}
 
 \end{document}
 
