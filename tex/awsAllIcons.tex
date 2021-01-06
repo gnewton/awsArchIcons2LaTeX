@@ -4,6 +4,7 @@
 \documentclass[12pt]{article}
 \usepackage{imakeidx}
 \usepackage{hyperref}
+\usepackage[hyphenbreaks]{breakurl}
 \usepackage[most]{tcolorbox}
 %\usepackage{savetrees}
 \usepackage{graphicx}
@@ -18,6 +19,7 @@
 \usepackage{listings}
 \usepackage{tabularx}
 \usepackage[export]{adjustbox}
+\usepackage{multicol}
 
 \usepackage[inner=10mm,outer=10mm]{geometry}
 
@@ -131,26 +133,32 @@
   \item For \textit{Resources}, only the \texttt{\_Light} versions. The \texttt{\_Dark} are omitted.
   \item For \textit{Services}, only the \texttt{\_64} versions. The lower resolution \texttt{\_16,\_32,\_48} are omitted.
   \end{itemize}
-  
-\noindent For instructions on how to generate this document with \textit{all} icons, please see the instructions in the \href{https://github.com/gnewton/awsArchIcons2LaTeX}{README.md} at the github repo.\\
+For instructions on how to generate this document with \textit{all} icons, please see the instructions in the \href{https://github.com/gnewton/awsArchIcons2LaTeX}{README.md} at the github repo.\\
 This document is: \url{https://github.com/gnewton/awsArchIcons2LaTeX/awsAllIcons.pdf}
 \end{itemize}
+This document also includes hyperlinks to Google searches of the titles of each icon.
 
 
 %%%%%%
 \section{How to use it?}
-Icons can be added to \LaTeX\ documents using the \LaTeX macros defined in the package, \texttt{awsicons.sty}. All you need to do is use the package AND add the directory containing all the gnerated icons to the \texttt{{\textbackslash}graphicspath\{...\}}.\\
-For example:
+There are two parts:
+\begin{enumerate}
+\item \texttt{awsicons.sty} file
+\item directory with all of the icons rendered into \LaTeX\ compatible form (in the repo, this is: \texttt{icons\_tex}).
+\end{enumerate}
+All you need to do is use the package to your \LaTeX\ document using \texttt{{\textbackslash}usepackage} (after having added the \texttt{awsicons.sty} file to where \LaTeX\ can see it, or put it in the same directory as your document) AND add the directory containing all the generated icons to the \texttt{{\textbackslash}graphicspath\{...\}}.\\
+
+\noindent For example:
+\vspace{4mm}
 
 \begin{blockquote}
 \begin{verbatim}
 % preamble
-\usepackage{../sty/awsicons} 
+\usepackage{awsicons} 
 \graphicspath{../icons_tex/}
 % after \begin{document}
 Here is a 1cm API Gateway:
 \RAPIGatewayEndpoint{1cm}
-
 Here is a 3cm Lambda function:
 \RLambdaLambdaFunc{3cm}
 
@@ -161,7 +169,6 @@ Here is a 3cm Lambda function:
 \begin{blockquote}
 Here is a 1cm API Gateway:
 \RAPIGatewayEndpoint{1cm}
-
 Here is a 3cm Lambda function:
 \RLambdaLambdaFunc{3cm}
 
@@ -175,12 +182,13 @@ There are more complex examples in the \href{https://github.com/gnewton/awsArchI
 
 \begin{itemize}
 \item \href{https://github.com/gnewton/awsArchIcons2LaTeX/blob/main/examples/simple.pdf}{Simple example}
-\item \textit{\href{https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.pdf}{Building a Controlled Environment Agriculture Platform}\footnote{\url{https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/}}}, by Ashu Joshi, 2020.12.22.
+\item \textit{\href{https://github.com/gnewton/awsArchIcons2LaTeX/blob/main/examples/Data-pipeline-Grov-Technologies.pdf}{Building a Controlled Environment Agriculture Platform}\footnote{\url{https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/}}}, by Ashu Joshi, 2020.12.22.
 \end{itemize}
   
 \section{Sources}
 The AWS Architecture icons used here are from \url{https://aws.amazon.com/architecture/icons/}.\\
-The specific assets package used: \href{https://d1.awsstatic.com/webteam/architecture-icons/Q32020/\assetZipFile}{\assetZipFile}
+The specific assets package used: \href{https://d1.awsstatic.com/webteam/architecture-icons/Q32020/\assetZipFile}{\assetZipFileSplit}
+%The specific assets package used: {\sloppy \href{https://d1.awsstatic.com/webteam/architecture-icons/Q32020/}{\assetZipFile}}
 
 \vspace{3cm}
 \noindent \copyright\ Glen Newton 2020\\
@@ -195,6 +203,107 @@ Icons in this document (I believe) are: \ \copyright\ Amazon Web Services (AWS)
 
 %%%%%%%%%%%%% INDEXES
 \normalsize
+
+\appendix
+\section{Mapping of icon names to macros names}
+In order to have reasonably short macro names, the following mappings have been made by \texttt{aws2tex}, being careful not to introduce any naming collisions.
+In addition, \LaTeX\ macros cannot contain numbers, so all numbers have been mapped to words, i.e. 1 $\rightarrow$ One, 5 $\rightarrow$ Five, etc.
+The below mappings are applied in order, followed by the number mappings.
+{\tiny
+\begin{multicols}{3}
+  \begin{enumerate}
+  \item  CertificateManager $\rightarrow$ CertMan
+  \item  ApplicationDiscoveryService $\rightarrow$ ADS
+  \item	CommandLineInterface $\rightarrow$  CLI
+  \item	CostandUsageReport $\rightarrow$ CostUseRep
+  \item	CloudFormation $\rightarrow$ CloudForm
+  \item	KeyManagementServices $\rightarrow$ KMS
+  \item	ElasticBlockStore $\rightarrow$ EBS
+  \item	ElasticContainerRegistry $\rightarrow$ ECR
+  \item	ElasticBeanstalk $\rightarrow$ EB
+  \item	ElasticContainerService $\rightarrow$ ECS
+  \item	ElasticLoadBalancing $\rightarrow$ ELB
+  \item	IdentityAccessManagement $\rightarrow$ IAM
+  \item	ElasticContainerKubernetes $\rightarrow$ ECK
+  \item	ElasticFileSystem $\rightarrow$ EFS
+  \item ElasticNetworkAdapter $\rightarrow$ ENA
+  \item ElasticNetworkInterface $\rightarrow$ ENI
+  \item	VirtualPrivateCloud $\rightarrow$ VPN
+  \item	IdentityandAccessManagement $\rightarrow$ IAM
+  \item	ServerlessApplicationRepository $\rightarrow$ SvlsAppRepo
+  \item	OpsWorks $\rightarrow$ OpWk
+  \item	SnowballSnowball $\rightarrow$ Snowball
+  \item	Encryption $\rightarrow$ Encr
+  \item	Encrypted $\rightarrow$ Encrd
+  \item	Thing $\rightarrow$ Thng
+  \item	Medical $\rightarrow$ Med
+  \item	Compute $\rightarrow$ Cmput
+  \item	Simulation $\rightarrow$ Simul
+  \item	Notification $\rightarrow$ Notif
+  \item	Object $\rightarrow$ Obj
+  \item	General $\rightarrow$ Gen
+  \item	Vault $\rightarrow$ Vlt
+  \item	Archive $\rightarrow$ Archv
+  \item	Application $\rightarrow$ App
+  \item	Replication $\rightarrow$ Repli
+  \item	Points $\rightarrow$ Pts
+  \item	Intelligent $\rightarrow$ Intell
+  \item	TrainingCertification $\rightarrow$ TrainCert
+  \item	Kinesis $\rightarrow$ Kin
+  \item	Aurora $\rightarrow$ Aur
+  \item	Alternate $\rightarrow$ Altern
+  \item	Amazon $\rightarrow$ 
+  \item	AWS $\rightarrow$ 
+  \item	PersonalHealthDashboard $\rightarrow$ PersHlthDbrd
+  \item	Manager $\rightarrow$ Mngr
+  \item	License $\rightarrow$ Licns
+  \item	EventBridge $\rightarrow$ EvBr
+  \item	Route53 $\rightarrow$ Rt53
+  \item	DynamoDB $\rightarrow$ DDB
+  \item	Bucket $\rightarrow$ Bkt
+  \item	SimpleNotificationService $\rightarrow$ SNS
+  \item	SimpleQueueService $\rightarrow$ SQS
+  \item	StorageGateway $\rightarrow$ StorGat
+  \item	SystemManager $\rightarrow$ SysMgr
+  \item	LoadBalancer $\rightarrow$ LB
+  \item	Migration $\rightarrow$ Migrat
+  \item	TransferFamily $\rightarrow$ TranFam
+  \item	TrustedAdvisor $\rightarrow$ TrusTAdv
+  \item	Certificate $\rightarrow$ Cert
+  \item	Recovery $\rightarrow$ Recov
+  \item	Resource $\rightarrow$ Res
+  \item	Global $\rightarrow$ Glbl
+  \item	Multiple $\rightarrow$ Mult
+  \item	Volumes $\rightarrow$ Vols
+  \item	Volume $\rightarrow$ Vol
+  \item	Default $\rightarrow$ Dflt
+  \item	Image $\rightarrow$ Img
+  \item	Registry $\rightarrow$ Reg
+  \item	Elemental $\rightarrow$ Elem
+  \item	Managed $\rightarrow$ Mngd
+  \item	Microsoft $\rightarrow$ MS
+  \item	Development $\rightarrow$ Dev
+  \item	Device $\rightarrow$ Dev
+  \item	Database $\rightarrow$ DB
+  \item	ThinkBox $\rightarrow$ TB
+  \item	Authority $\rightarrow$ Auth
+  \item	Distribution $\rightarrow$ Distr
+  \item	Directory $\rightarrow$ Dir
+  \item	Instance $\rightarrow$ Inst
+  \item	Virtual $\rightarrow$ Virt
+  \item	Database $\rightarrow$ DB
+  \item	Attributes $\rightarrow$ Atts
+  \item	Attribute $\rightarrow$ Att
+  \item	Security $\rightarrow$ Sec
+  \item	Service $\rightarrow$ Svc
+  \item	Credential $\rightarrow$ Cred
+  \item	Emergency $\rightarrow$ Emerg
+  \item	Function $\rightarrow$ Func
+  \item	Organizational $\rightarrow$ Org
+  \item	SThreeSThree $\rightarrow$ SThree
+  \end{enumerate}
+\end{multicols}
+}
 
 \printindex
 \printindex[macros]

@@ -78,8 +78,9 @@ func main() {
 	fmt.Fprintf(wStyle, "%% Using https://www.overleaf.com/learn/latex/Writing_your_own_package\n")
 	fmt.Fprintf(wStyle, "\\NeedsTeXFormat{LaTeX2e}\n")
 	fmt.Fprintf(wStyle, "\\ProvidesClass{awsicons}[2020/01/03 AWS Architectural Icons]\n")
-
-	fmt.Fprintf(wStyle, "\\newcommand{\\assetZipFile}{%s}\n", strings.ReplaceAll(argAssetZipFile, "_", "\\_"))
+	fixedZipFile := strings.ReplaceAll(argAssetZipFile, "_", "\\_")
+	fmt.Fprintf(wStyle, "\\newcommand{\\assetZipFile}{%s}\n", fixedZipFile)
+	fmt.Fprintf(wStyle, "\\newcommand{\\assetZipFileSplit}{\\seqsplit{%s}}\n", fixedZipFile)
 	fmt.Fprintf(wStyle, "\\newcommand{\\inkscapeVersion}{%s}\n", strings.ReplaceAll(inkscapeVersion, "_", "\\_"))
 	fmt.Fprintln(wStyle, "\\definecolor{awsOrange}{RGB}{255 153 0}")
 	fmt.Fprintln(wStyle, "%%%%%%%%%%%%%%%%")
@@ -444,8 +445,15 @@ var macroSubs = []string{
 	"ElasticContainerService", "ECS",
 	"ElasticLoadBalancing", "ELB",
 	"IdentityAccessManagement", "IAM",
+	"ElasticContainerKubernetes", "ECK",
+	"ElasticFileSystem", "EFS",
+	"ElasticNetworkAdapter", "ENA",
+	"ElasticNetworkInterface", "ENI",
+	"VirtualPrivateCloud", "VPN",
 	"IdentityandAccessManagement", "IAM",
 	"ServerlessApplicationRepository", "SvlsAppRepo",
+	"OpsWorks", "OpWk",
+	"SnowballSnowball", "Snowball",
 	"Encryption", "Encr",
 	"Encrypted", "Encrd",
 	"Thing", "Thng",
@@ -457,11 +465,14 @@ var macroSubs = []string{
 	"General", "Gen",
 	"Vault", "Vlt",
 	"Archive", "Archv",
+	"Application", "App",
 	"Replication", "Repli",
 	"Points", "Pts",
 	"Intelligent", "Intell",
 	"TrainingCertification", "TrainCert",
 	"Kinesis", "Kin",
+	"Aurora", "Aur",
+	"Alternate", "Altern",
 	"Amazon", "",
 	"AWS", "",
 	"PersonalHealthDashboard", "PersHlthDbrd",
