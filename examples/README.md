@@ -14,17 +14,17 @@ Here is the **ORIGINAL** diagram:
 I have re-created this architecture diagram using awsicons.sty, and [https://ctan.org/pkg/pgf?lang=en](LaTeX tikz) trying to reproduce as best I can the original, with a few exceptions.
 
 Some differences:
-1 The "Amazon API Gateway" has a reddish colour in the original; in the icons from the assets package used here ([https://d1.awsstatic.com/webteam/architecture-icons/Q32020/AWS-Architecture-Assets-For-Light-and-Dark-BG_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip](AWS-Architecture-Assets-For-Light-and-Dark-BG_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip), this icon is purplish.
-1 I used an orange line for the block indicating AWS cloud instead of the black one in the original.
-1 I used an orange square with aws written in it, as I could not find an (unencumbered) icon with "aws" and the aws swoosh.
-1 I straightened out one of the lines (Grov Edge Greengrass to the S3 Data Bucket).
-1 The arrows/lines connecting icons do not attach to each icon, instead leave a small space. This looked good and was the default tikz behaviour, so I did not change this.
-1 There was no React icon that I could find in the AWS assets package, so I found something close on [https://tex.stackexchange.com/questions/349960/how-to-draw-a-symbol-on-a-tikz-node-that-can-be-reused](stackexchange) and modified it to be pretty close.
+1. The "Amazon API Gateway" has a reddish colour in the original; in the icons from the assets package used here ([https://d1.awsstatic.com/webteam/architecture-icons/Q32020/AWS-Architecture-Assets-For-Light-and-Dark-BG_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip](AWS-Architecture-Assets-For-Light-and-Dark-BG_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip), this icon is purplish.
+1. I used an orange line for the block indicating AWS cloud instead of the black one in the original.
+1. I used an orange square with aws written in it, as I could not find an (unencumbered) icon with "aws" and the aws swoosh.
+1. I straightened out one of the lines (Grov Edge Greengrass to the S3 Data Bucket).
+1. The arrows/lines connecting icons do not attach to each icon, instead leave a small space. This looked good and was the default tikz behaviour, so I did not change this.
+1. There was no React icon that I could find in the AWS assets package, so I found something close on [https://tex.stackexchange.com/questions/349960/how-to-draw-a-symbol-on-a-tikz-node-that-can-be-reused](stackexchange) and modified it to be pretty close.
 
 <img src="https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.png" alt="Diagram re-created using aswicons.sty" style="width:2000px;"/>
 
 Things to improve/change:
-1 I need to use styles instead of all of the, for example, `\draw[->,gray]` everywhere.
-2 Maybe I should add the React icon as a macro in the LaTeX style?
+1. I need to use styles instead of all of the, for example, `\draw[->,gray]` everywhere.
+2. Maybe I should add the React icon as a macro in the LaTeX style?
 
 
