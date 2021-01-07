@@ -26,7 +26,6 @@ Some differences:
 
 
 Things to improve/change:
-1. I need to use styles instead of all of the, for example, `\draw[->,gray]` everywhere.
-2. Maybe I should add the React icon as a macro in the LaTeX style?
+1. Maybe I should add the React icon as a macro in the LaTeX style?
 
 
