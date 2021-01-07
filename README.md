@@ -23,7 +23,7 @@ The [awsAll.pdf](https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/awsAllIc
 
 # How to use it?
 There are two parts:
-1. \texttt{awsicons.sty} file
+1. ['awsicons.sty']() LaTeX style file
 1. The directory with all of the icons rendered into LaTeX compatible form, [icons_tex](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/icons_tex)
 
 All you need to do is use the package to your LaTeX document using `\usepackage` (after having added the `awsicons.sty` file to where LaTeX can see it, or put it in the same directory as your document) **AND** add the directory containing all the generated icons to the `\graphicspath{...}`.
@@ -33,7 +33,7 @@ See the [examples](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/examp
 
 # aws2tex Go Program
 TODO
-Found in [`aws2tex`](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/aws2tex)
+Found in [aws2tex](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/aws2tex) directory.
 
 # Dependencies
 * Inkscape. Version 0.92.4 (5da689c313, 2019-01-14) tested.
@@ -43,5 +43,7 @@ TODO
 * graphicx
 * xcolor
 
+# TODO
+1. Instead of creating a LaTeX `.sty` file (very old school), properly create LaTeX package installation files, `.dtx` and `.ins`.
 
 Copyright Glen Newton 2020,2021

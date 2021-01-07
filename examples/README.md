@@ -1,7 +1,9 @@
 # Examples
 
 ## Simple
-TODO
+Very simple one page example: 
+[PDF](https://github.com/gnewton/awsArchIcons2LaTeX/blob/main/examples/simple.pdf)
+[LaTeX](https://github.com/gnewton/awsArchIcons2LaTeX/blob/main/examples/simple.tex)
 
 ## AWS Architecture Blog Diagram
 The Dec 22 2020 AWS Architecture blog has a great article on agriculture (a topic close to my heart) called [Building a Controlled Environment Agriculture Platform](https://aws.amazon.com/blogs/architecture/building-a-controlled-environment-agriculture-platform/ "Building a Controlled Environment Agriculture Platform"), by Ashu Joshi.
