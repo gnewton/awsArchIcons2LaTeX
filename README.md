@@ -28,6 +28,10 @@ There are two parts:
 
 All you need to do is use the package to your LaTeX document using `\usepackage` (after having added the `awsicons.sty` file to where LaTeX can see it, or put it in the same directory as your document) **AND** add the directory containing all the generated icons to the `\graphicspath{...}`.
 
+## Additional package details
+* The package defines the colour `awsOrange`. 
+* THe following macros are defined: `\assetZipFile`, `\inkscapeVersion`. These are used in the `awsAllIcons.pdf` document.
+
 # Examples
 See the [examples](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/examples)
 
