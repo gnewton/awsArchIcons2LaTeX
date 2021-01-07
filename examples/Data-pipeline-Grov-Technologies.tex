@@ -43,83 +43,83 @@
       }
     }
   ]
-
+  \tikzstyle{fontbf} = [font=\bfseries]
   \draw [draw=awsOrange,thick] (-1,-3.5) rectangle (13,4.9);
 
   %  \node(aws)[fill=black, text=white,rectangle,inner sep=2pt,draw,] at  (-.6829,4.609){\parbox[c][.40cm]{.45cm}{\footnotesize aws\ }};
-    \node(aws)[fill=awsOrange, draw=awsOrange,text=white,rectangle,inner sep=2pt,draw,] at  (-.6829,4.609){\parbox[c][.40cm]{.45cm}{\footnotesize aws\ }};
-  \node (awsCloud) [right of=aws,xshift=1.5mm] {\footnotesize AWS Cloud};
+    \node(aws)[fontbf, fill=awsOrange, draw=awsOrange,text=white,rectangle,inner sep=2pt,draw,] at  (-.6829,4.609){\parbox[c][.40cm]{.45cm}{\footnotesize aws\ }};
+  \node (awsCloud) [fontbf, right of=aws,xshift=1.5mm] {\footnotesize AWS Cloud};
 
   \node (core) {\AIoTCore{1cm}};
 
   \node (preCore)[shape=coordinate,left of=core,align=center] {};
   \node (sensorData)[shape=coordinate,left of=preCore,align=center,xshift=-8mm] {};
 
-  \node (botEdge)[black,left of=sensorData,align=center, xshift=-1mm] {\tiny \textbf{Gr\"{o}v CEA Edge}};
-  \node (coreLabel)[below of=core,align=center,yshift=3.5mm] {\tiny AWS IoT Core};
+  \node (botEdge)[fontbf, black,left of=sensorData,align=center, xshift=-1mm] {\tiny Gr\"{o}v CEA Edge};
+  \node (coreLabel)[fontbf, below of=core,align=center,yshift=3.5mm] {\tiny AWS IoT Core};
   \node (split) [shape=coordinate,right of= core] {};
   \node (topAngle) [shape=coordinate,above of = split,yshift=1.2cm] {};
   \node (botAngle) [shape=coordinate,below of = split,yshift=-1.2cm] {};
 
 
   \node (topIotRule)[right of= topAngle]{\RIoTRule{.35cm}};
-  \node (topIotRuleLabel)[below of=topIotRule,align=center,yshift=6mm] {\tiny IoT Rule};
+  \node (topIotRuleLabel)[fontbf, below of=topIotRule,align=center,yshift=6mm] {\tiny IoT Rule};
   \node (botIotRule)[right of= botAngle]{\RIoTRule{.35cm}};
-  \node (botIotRuleLabel)[below of=botIotRule,align=center,yshift=6mm] {\tiny IoT Rule};
+  \node (botIotRuleLabel)[fontbf, below of=botIotRule,align=center,yshift=6mm] {\tiny IoT Rule};
   \node (topIotAction)[right of= topIotRule,xshift=5mm]{\RIoTAction{.55cm}};
-  \node (topIotActionLabel)[below of= topIotAction,align=center,yshift=6mm]{\tiny IoT Action};
+  \node (topIotActionLabel)[fontbf, below of= topIotAction,align=center,yshift=6mm]{\tiny IoT Action};
   \node (botIotAction)[right of= botIotRule,xshift=5mm]{\RIoTAction{.55cm}};
-  \node (botIotActionLabel)[below of= botIotAction,align=center,yshift=6mm]{\tiny IoT Action};
-  \node (midIotAction)[below of= topIotAction,yshift=-1cm]{\RIoTAction{.55cm}};
-  \node (midIotActionLabel)[below of= midIotAction,align=center,yshift=6mm]{\tiny IoT Action};
+  \node (botIotActionLabel)[fontbf, below of= botIotAction,align=center,yshift=6mm]{\tiny IoT Action};
+  \node (midIotAction)[fontbf, below of= topIotAction,yshift=-1cm]{\RIoTAction{.55cm}};
+  \node (midIotActionLabel)[fontbf, below of= midIotAction,align=center,yshift=6mm]{\tiny IoT Action};
   \node (midAngle) [shape=coordinate,below of = topIotRule,yshift=-1cm] {};
 
   \node (kinesis) [right of = midIotAction,xshift=.5cm] {\AKinDataStreams{1cm}};
-  \node (kinesisLabel)[below of= kinesis,align=center,yshift=2.5mm]{\tiny Amazon Kinesis \\[-2mm] \tiny Data Streams};
+  \node (kinesisLabel)[fontbf, below of= kinesis,align=center,yshift=2.5mm]{\tiny Amazon Kinesis \\[-2mm] \tiny Data Streams};
 
   \node (sensorDynamo)[right of= botIotAction,xshift=.5cm]{\ADDB{1cm}};
-  \node (sensorDynamoLabel)[below of= sensorDynamo,align=center,yshift=2.5mm]{\tiny Amazon DynamoDB \\[-2mm] \tiny Sensor State Table};
+  \node (sensorDynamoLabel)[fontbf, below of= sensorDynamo,align=center,yshift=2.5mm]{\tiny Amazon DynamoDB \\[-2mm] \tiny Sensor State Table};
 
   \node (s3)[right of= topIotAction,xshift=.5cm]{\RSThreeBkt{.55cm}};
-  \node (s3Label)[below of= s3,align=center,yshift=4.5mm]{\tiny AWS S3 \\[-2mm] \tiny Data Bucket};
+  \node (s3Label)[fontbf, below of= s3,align=center,yshift=4.5mm]{\tiny AWS S3 \\[-2mm] \tiny Data Bucket};
 
   \node (s3AboveAngle) [shape=coordinate,above of = s3,yshift=-3mm] {};
   \node (images) [shape=coordinate,left of = s3AboveAngle, xshift=-6.8cm] {};
-    \node (topEdge)[black,left of=images,align=center, xshift=-1mm] {\tiny \textbf{Gr\"{o}v CEA Edge}};
+    \node (topEdge)[fontbf, black,left of=images,align=center, xshift=-1mm] {\tiny \textbf{Gr\"{o}v CEA Edge}};
 
   \node (glue)[right of= s3,xshift=1cm]{\AGlue{1cm}};
-  \node (glueLabel)[below of= glue,align=center,yshift=3.5mm]{\tiny Amazon Glue};
+  \node (glueLabel)[fontbf, below of= glue,align=center,yshift=3.5mm]{\tiny Amazon Glue};
 
   \node (athena)[right of= glue,xshift=1cm]{\AAthena{1cm}};
-  \node (athenaLabel)[below of= athena,align=center,yshift=3.5mm]{\tiny \textbf{Amazon Athena}};
+  \node (athenaLabel)[fontbf, below of= athena,align=center,yshift=3.5mm]{\tiny Amazon Athena};
 
   \node (quicksight)[right of= athena,xshift=1cm]{\AQuickSight{1cm}};
-  \node (quicksightLabel)[below of= quicksight,align=center,yshift=3.5mm]{\tiny Amazon QuickSite};
+  \node (quicksightLabel)[fontbf, below of= quicksight,align=center,yshift=3.5mm]{\tiny Amazon QuickSite};
   
   \node (lambdaFunction)[right of= kinesis,xshift=.5cm]{\RLambdaLambdaFunc{.65cm}};
   \node (aggrDynamo)[right of= lambdaFunction,xshift=.5cm]{\ADDB{1cm}};
-  \node (aggrDynamoLabel)[below of= aggrDynamo,align=center,yshift=2.5mm]{\tiny Amazon DynamoDB \\[-2mm] \tiny Aggregated Data};
+  \node (aggrDynamoLabel)[fontbf, below of= aggrDynamo,align=center,yshift=2.5mm]{\tiny Amazon DynamoDB \\[-2mm] \tiny Aggregated Data};
   \node (lambda)[right of= aggrDynamo,xshift=1cm]{\ALambda{1cm}};
-  \node (lambdaLabel)[below of= lambda,align=center,yshift=3.5mm]{\tiny Amazon Lambda};
+  \node (lambdaLabel)[fontbf, below of= lambda,align=center,yshift=3.5mm]{\tiny Amazon Lambda};
   
   \node (apiGateway)[right of= lambda, xshift=1cm]{\AAPIGateway{1cm}};
-  \node (apiGatewayLabel)[below of= apiGateway,align=center,yshift=3.5mm]{\tiny Amazon API Gateway};
+  \node (apiGatewayLabel)[fontbf, below of= apiGateway,align=center,yshift=3.5mm]{\tiny Amazon API Gateway};
 
   \node (nearReact) [shape=coordinate,right of= apiGateway, xshift=0.5cm]{};
   \node (react) [draw, atom=10mm, right of= apiGateway, xshift=1.2cm]{};
-  \node (reactLabel)[below of= react,align=center,yshift=2.5mm]{\tiny React--based Operational \\[-2mm] \tiny Dashboard};
+  \node (reactLabel)[fontbf, below of= react,align=center,yshift=2.5mm]{\tiny React--based Operational \\[-2mm] \tiny Dashboard};
   
   %%%%%%%%%%%%%%
-  \draw[lns,<->] (preCore) -- (sensorData)node[pos=.5,above,align=center, black]{\tiny \textbf{Certificate--based} \\[-2mm] \tiny \textbf{authentication}}  node[pos=.5,below, black,align=center]{\tiny \textbf{Sensor Data}};
-  \draw[lns,-]  (images) -- (s3AboveAngle)node[pos=.12,above,align=center, black]{\tiny \textbf{Authenticates} \\[-2mm] \tiny \textbf{with AWS} \\[-2mm] \tiny \textbf{Greengrass} \\[-2mm] \tiny \textbf{Resource Role}} node[pos=.12,below, black,align=center]{\tiny \textbf{Upload processed} \\[-2mm] \tiny \textbf{images}};
+  \draw[lns,<->] (preCore) -- (sensorData)node[fontbf, pos=.5,above,align=center, black]{\tiny Certificate--based \\[-2mm] \tiny authentication}  node[fontbf, pos=.5,below, black,align=center]{\tiny Sensor Data};
+  \draw[lns,-]  (images) -- (s3AboveAngle)node[fontbf, pos=.12,above,align=center, black]{\tiny Authenticates \\[-2mm] \tiny with AWS \\[-2mm] \tiny Greengrass \\[-2mm] \tiny Resource Role} node[fontbf, pos=.12,below, black,align=center]{\tiny Upload processed \\[-2mm] \tiny images};
   \draw[lns,gray]  (s3AboveAngle) -- (s3);
   
   \draw[lns,-]   ([xshift=-1.2mm]core.east) -- (split);
-  \draw[lns,-]   (split) -- (topAngle) node[black,yshift=-.9cm,xshift=-1mm,align=center,xshift=-3.5mm]{\tiny \textbf{Sensor} \\[-2mm] \tiny \textbf{Readings}};
-  \draw[lns,-]   (split) -- (botAngle) node[black,pos=1,align=center,xshift=-3.5mm]{\tiny \textbf{Sensor} \\[-2mm] \tiny \textbf{States}};
+  \draw[lns,-]   (split) -- (topAngle) node[fontbf, black,yshift=-.9cm,xshift=-1mm,align=center,xshift=-3.5mm]{\tiny Sensor \\[-2mm] \tiny Readings};
+  \draw[lns,-]   (split) -- (botAngle) node[fontbf, black,pos=1,align=center,xshift=-3.5mm]{\tiny Sensor \\[-2mm] \tiny States};
 
   \draw[lns]  (topAngle) -- (topIotRule);
-  \draw[lns]  (topIotRule) -- (topIotAction) node[black,midway,above,align=center]{\tiny \textbf{Raw}};
+  \draw[lns]  (topIotRule) -- (topIotAction) node[fontbf, black,midway,above,align=center]{\tiny Raw};
   \draw[lns]  (botAngle) -- (botIotRule) ;
   \draw[lns]  (botIotRule) -- (botIotAction);
 
@@ -131,7 +131,7 @@
   \draw[lns]  (athena) -- (glue);
   \draw[lns]  (quicksight) -- (athena);
 
-  \draw[lns,-]  (topIotRuleLabel) -- (midAngle)  node[pos=0.5, xshift=-.9mm,right,align=center, black]{\tiny \textbf{To be} \\[-2mm] \tiny \textbf{aggregated}};
+  \draw[lns,-]  (topIotRuleLabel) -- (midAngle)  node[fontbf, pos=0.5, xshift=-.9mm,right,align=center, black]{\tiny To be \\[-2mm] \tiny aggregated};
   \draw[lns]  (midAngle) -- (midIotAction);
   \draw[lns]  (midIotAction) -- (kinesis);
   \draw[lns]  (kinesis) -- (lambdaFunction);
