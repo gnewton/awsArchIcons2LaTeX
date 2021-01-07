@@ -1,7 +1,15 @@
-# What is this?}
+# What is this?
 LaTeX style awsicons.sty which allows you to use the [AWS architectural icons](https://aws.amazon.com/architecture/icons/) in your LaTeX  documents.
+Here is an example: 
+[PDF](https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.pdf) 
+[LaTeX](https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.tex)
+found in the [examples](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/examples) directory of this repo.
 
-The AWS SVG icons are converted to LaTeX-compatible PDF form using [Inkscape](https://inkscape.org/) using the purpose-written Go program [aws2tex] (https://github.com/gnewton/awsArchIcons2LaTeX/aws2tex). 
+And another (uses all icons): 
+[PDF](https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/awsAllIcons.pdf) 
+[LaTeX](https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/tex/awsAllIcons.tex)
+
+The AWS SVG icons are converted to LaTeX-compatible PDF form using [Inkscape](https://inkscape.org/) using the purpose-written Go program [aws2tex](https://github.com/gnewton/awsArchIcons2LaTeX/aws2tex). 
 
 This Go program, aws2tex, creates:
 1. `awsicons.sty` file
@@ -13,9 +21,27 @@ This Go program, aws2tex, creates:
 The [awsAll.pdf](https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/awsAllIcons.pdf) document also includes hyperlinks to Google searches of the titles of each icon.
 
 
-# How to use it?}
+# How to use it?
 There are two parts:
 1. \texttt{awsicons.sty} file
 1. The directory with all of the icons rendered into LaTeX compatible form, [icons_tex](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/icons_tex)
 
 All you need to do is use the package to your LaTeX document using `\usepackage` (after having added the `awsicons.sty` file to where LaTeX can see it, or put it in the same directory as your document) **AND** add the directory containing all the generated icons to the `\graphicspath{...}`.
+
+# Examples
+See the [examples](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/examples)
+
+# aws2tex Go Program
+TODO
+Found in (aws2tex)[https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/aws2tex]
+
+# Dependencies
+* Inkscape. Version 0.92.4 (5da689c313, 2019-01-14) tested.
+## aws2tex
+TODO
+## LaTeX Packages 
+* graphicx
+* xcolor
+
+
+Copyright Glen Newton 2020,2021
