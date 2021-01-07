@@ -33,7 +33,7 @@ See the [examples](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/examp
 
 # aws2tex Go Program
 TODO
-Found in (aws2tex)[https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/aws2tex]
+Found in [`aws2tex`](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/aws2tex)
 
 # Dependencies
 * Inkscape. Version 0.92.4 (5da689c313, 2019-01-14) tested.
