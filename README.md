@@ -4,6 +4,7 @@ Here is an example:
 [PDF](https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.pdf) 
 [LaTeX](https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.tex)
 found in the [examples](https://github.com/gnewton/awsArchIcons2LaTeX/tree/main/examples) directory of this repo.
+
 <img src="https://github.com/gnewton/awsArchIcons2LaTeX/raw/main/examples/Data-pipeline-Grov-Technologies.png" alt="Diagram re-created using aswicons.sty" style="width:200px;"/>
 
 
