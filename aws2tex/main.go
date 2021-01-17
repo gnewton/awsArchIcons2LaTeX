@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -74,8 +73,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	// TODO Need to fix this: use templates for style output
+	fmt.Fprintf(wStyle, "%%")
+	fmt.Fprintf(wStyle, "%%  Copyright (C) 2021 by Glen Newton")
+	fmt.Fprintf(wStyle, "%%")
+	fmt.Fprintf(wStyle, "%%  This file may be distributed and/or modified under the")
+	fmt.Fprintf(wStyle, "%%  conditions of the LaTeX Project Public License, either")
+	fmt.Fprintf(wStyle, "%%  version 1.3 of this license or (at your option) any later")
+	fmt.Fprintf(wStyle, "%%  version. The latest version of this license is in:")
+	fmt.Fprintf(wStyle, "%%")
+	fmt.Fprintf(wStyle, "%%  http://www.latex-project.org/lppl.txt")
+	fmt.Fprintf(wStyle, "%%")
+	fmt.Fprintf(wStyle, "%%  and version 1.3 or later is part of all distributions of")
+	fmt.Fprintf(wStyle, "%%  LaTeX version 2005/12/01 or later.")
+	fmt.Fprintf(wStyle, "%%")
 
-	fmt.Fprintf(wStyle, "%% Using https://www.overleaf.com/learn/latex/Writing_your_own_package\n")
 	fmt.Fprintf(wStyle, "\\NeedsTeXFormat{LaTeX2e}\n")
 	fmt.Fprintf(wStyle, "\\ProvidesClass{awsicons}[2020/01/03 AWS Architectural Icons]\n")
 	fixedZipFile := strings.ReplaceAll(argAssetZipFile, "_", "\\_")
@@ -229,40 +241,12 @@ func processAWSIcons(src string, dest string) ([]*Entry, []*Entry, error) {
 		}
 
 		if argConvertSvgWithInkscape {
-			if true {
-				e, err := runCommandReadStdin(rc, argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
-				if err != nil {
-					log.Println(e)
-					log.Fatal(err)
-				}
-			} else {
-				// Setup running inkscape to do conversion, writing out to pdfFile
-				cmd := exec.Command(argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
-				stdin, err := cmd.StdinPipe()
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				// Read the zip file and pipe in to inkscape
-				go func() {
-					defer func() {
-						if err := stdin.Close(); err != nil {
-							log.Fatal(err)
-						}
-					}()
-					_, err = io.Copy(stdin, rc)
-					if err != nil {
-						log.Fatal(err)
-					}
-				}()
-
-				// If there is a problem with running inkscape...
-				stdoutStderr, err := cmd.CombinedOutput()
-				if err != nil {
-					fmt.Printf("%s\n", stdoutStderr)
-					log.Fatal(err)
-				}
+			e, err := runCommandReadStdin(rc, argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
+			if err != nil {
+				log.Println(e)
+				log.Fatal(err)
 			}
+
 		}
 		// Close the file without defer to close before next iteration of loop
 		err = rc.Close()
