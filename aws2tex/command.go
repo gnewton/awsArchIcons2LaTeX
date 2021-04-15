@@ -13,10 +13,15 @@ func getInkscapeVersion(binPath string, helpArgs ...string) (string, error) {
 func runCommandWithArgumentsGetStdOut(binPath string, args ...string) (string, error) {
 	log.Println("runCommandWithArgumentsGetStdOut", binPath, args)
 	out, err := exec.Command(binPath, args...).Output()
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(out)
 	return string(out), err
 }
 
 func runCommandReadStdin(r io.Reader, binPath string, args ...string) (string, error) {
+	log.Println("runCommandReadStdin", binPath, args)
 	cmd := exec.Command(binPath, args...)
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
@@ -30,6 +35,9 @@ func runCommandReadStdin(r io.Reader, binPath string, args ...string) (string, e
 			}
 		}()
 		_, funcError = io.Copy(stdin, r)
+		if funcError != nil {
+			log.Fatal(funcError)
+		}
 		return
 	}()
 
@@ -37,10 +45,11 @@ func runCommandReadStdin(r io.Reader, binPath string, args ...string) (string, e
 	stdoutStderr, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Printf("%s\n", stdoutStderr)
-		return string(stdoutStderr), err
+		log.Fatal(stdoutStderr)
+		//return string(stdoutStderr), err
 	}
 	if funcError != nil {
-		return "", funcError
+		log.Fatal(funcError)
 	}
 	return "", nil
 }

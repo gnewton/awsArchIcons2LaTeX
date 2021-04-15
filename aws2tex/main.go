@@ -3,6 +3,7 @@ package main
 import (
 	"archive/zip"
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -26,7 +27,9 @@ type Entry struct {
 
 const MACOS_PREFIX = "__MACOSX"
 
-var argAssetZipFile string = "AWS-Architecture-Assets-For-Light-and-Dark-BG_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip"
+var argAssetZipFile string = "../assets/AWS-Architecture-Assets-For-Light-and-Dark-BG_20200911.478ff05b80f909792f7853b1a28de8e28eac67f4.zip"
+
+//var argAssetZipFile string = "AWS-Architecture_Asset-Package_20210131.a41ffeeec67743738315c2585f5fdb6f3c31238d.zip"
 var argConvertSvgWithInkscape = true
 var argIconsFile string = "tex/icons.tex"
 var argStyleFile string = "sty/awsicons.sty"
@@ -40,18 +43,19 @@ var argShowAllRes bool = false
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	flag.Parse()
 
 	// Create output dir, if needed
 	err := os.MkdirAll(argPdfTexOutDir, 0700)
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	log.Println("startProcessAWSIcons")
 	arch_entries, res_entries, err := processAWSIcons(argAssetZipFile, argPdfTexOutDir)
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	log.Println("END startProcessAWSIcons")
 	sort.Sort(ByName(res_entries))
 	sort.Sort(ByName(arch_entries))
 
@@ -130,11 +134,13 @@ func processAWSIcons(src string, dest string) ([]*Entry, []*Entry, error) {
 
 	r, err := zip.OpenReader(src)
 	if err != nil {
+		log.Println(err)
 		return nil, nil, err
 	}
 	defer r.Close()
 
 	for _, f := range r.File {
+		log.Println(f.Name)
 		if f.FileInfo().IsDir() {
 			continue
 		}
@@ -239,9 +245,11 @@ func processAWSIcons(src string, dest string) ([]*Entry, []*Entry, error) {
 		} else {
 			res_entries = append(res_entries, &entry)
 		}
-
+		log.Println("Converting")
 		if argConvertSvgWithInkscape {
-			e, err := runCommandReadStdin(rc, argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
+			log.Println(".......converting")
+			//e, err := runCommandReadStdin(rc, argInkscapeBinPath, "--file=-", "-D", "-z", "--export-latex", "--export-pdf="+pdfFile)
+			e, err := runCommandReadStdin(rc, argInkscapeBinPath, "--pipe", "-D", "--export-latex", "--export-filename="+pdfFile)
 			if err != nil {
 				log.Println(e)
 				log.Fatal(err)
